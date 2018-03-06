@@ -39,22 +39,32 @@ def connect(request):
 
  	requestor = request.POST.get('requestor')
  	target = request.POST.get('target')
- 	# res={}
- 	# if bool(Person.objects.filter(name=requestor)):
- 	# 	#Record exists
- 	# 	requestor_obj = Person.objects.get(name=requestor)
- 	# else:
- 	# 	#No records
- 	# 	Person.objects.create(name=requestor)
- 	# 	requestor_obj = Person.objects.get(name=requestor)
+ 	res={}
+ 	try:
+	 	if bool(Person.objects.filter(name=requestor)):
+	 		#Record exists
+	 		requestor_obj = Person.objects.get(name=requestor)
+	 	else:
+	 		#No records
+	 		Person.objects.create(name=requestor)
+	 		requestor_obj = Person.objects.get(name=requestor)
+	 	
+	 	if bool(Friends.objects.filter(person=requestor_obj)):
+	 		#Record exists
+	 		requestor_friends = Friends.objects.get(person=requestor_obj)
+	 		requestor_friends.friends.append(target)
+	 		requestor_friends.save()
+	 	else:
+	 		#No records
+	 		Friends.objects.create(person=requestor_obj,friends=[target], blocked_friends=[],follows=[],following=[] )	
+ 		res['success'] = True
  	# try:
  	# 	requestor_friends = Friends.objects.get(person=requestor_obj)
  	# 	requestor_friends.friends.append(target)
  	# 	res['success'] = True
  	# except:
  	# 	res['success'] = False
- 	res={
- 	'1':1,
- 	'2':2
- 	}
+ 	# res['success'] = requestor_obj.name
+ 	except:
+ 		res['success'] = False		
  	return HttpResponse(json.dumps(res))
