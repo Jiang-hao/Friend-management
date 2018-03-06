@@ -7,6 +7,8 @@ from .serializers import *
 from .models import *
 from django.core import serializers
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 
 class CreateView(generics.ListCreateAPIView):
     """This class defines the create behavior of our rest api."""
@@ -32,3 +34,27 @@ def listAll(request):
 	res['2'] = 3
 	#data = serializers.serialize('json', res)
 	return HttpResponse(json.dumps(res))
+@csrf_exempt
+def connect(request):
+
+ 	requestor = request.POST.get('requestor')
+ 	target = request.POST.get('target')
+ 	# res={}
+ 	# if bool(Person.objects.filter(name=requestor)):
+ 	# 	#Record exists
+ 	# 	requestor_obj = Person.objects.get(name=requestor)
+ 	# else:
+ 	# 	#No records
+ 	# 	Person.objects.create(name=requestor)
+ 	# 	requestor_obj = Person.objects.get(name=requestor)
+ 	# try:
+ 	# 	requestor_friends = Friends.objects.get(person=requestor_obj)
+ 	# 	requestor_friends.friends.append(target)
+ 	# 	res['success'] = True
+ 	# except:
+ 	# 	res['success'] = False
+ 	res={
+ 	'1':1,
+ 	'2':2
+ 	}
+ 	return HttpResponse(json.dumps(res))
