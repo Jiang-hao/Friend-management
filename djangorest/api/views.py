@@ -10,6 +10,11 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
+import datetime
+from django.template.loader import get_template
+from django.shortcuts import render_to_response
+from django.shortcuts import render
+
 
 class CreateView(generics.ListCreateAPIView):
     """This class defines the create behavior of our rest api."""
@@ -19,6 +24,17 @@ class CreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         """Save the post data when creating a new bucketlist."""
         serializer.save()
+
+def index(request):
+	persons = Person.objects.all()
+	context = {'allPersons': persons}
+	if request.is_ajax():
+		t = 'partial.html'
+	else:
+		t = 'index.html'
+	#html = t.render(context)
+	return render(request,t,context)
+
 
 def listAll(request):
 	res={}

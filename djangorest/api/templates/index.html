@@ -1,5 +1,4 @@
 
-<% load staticfiles %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -44,49 +43,55 @@
 	<br>
 	<input id="target" type='text'>	
 	<button id='connect' >Connect</button>
+	<button id='update' >Update</button>
 </div>
 <br><br>
+
 <div>
 	
 	<p>All persons:</p>
-	<ul>
-		{% for item in allPersons %}
-		<li>{{item.name}}
-		{% endfor %}
+	<ul id='update-list'>
+		{% include "partial.html" %}
 	</ul>
+
 
 </div>
 	
 	
 	<script>
+	
+ $('#connect').on('click',function(){
 
-	$(document).ready(function(){
+		$.ajax({
+			type:"POST",
+			dataType: "json",
+			url: 'http://localhost:8000/connect/',
+			data:{
+				'requestor':$('#requestor').val(),
+				'target':$('#target').val()
+			},
+			success: function(result){
+				alert(result["success"])
+			},
+			error: function(xhr,thrownError){
+				alert(thrownError)
+			}
+		});
+
+	
+});
+
+  $('#update').on('click',function(){
 
 		$.ajax({
 			type:"GET",
-			dataType:"json",
-			url:"http://localhost:8000/all"
-		})
+			url: 'http://localhost:8000/index/',
+			success: function(result){
+				$('#update-list').empty()
+				$('#update-list').append(result)
+			},
 
-	});
-	
-	
- $('#connect').on('click',function(){
-	$.ajax({
-		type:"POST",
-		dataType: "json",
-		url: 'http://localhost:8000/connect/',
-		data:{
-			'requestor':$('#requestor').val(),
-			'target':$('#target').val()
-		},
-		success: function(result){
-			alert(result["success"])
-		},
-		error: function(xhr,thrownError){
-			alert(thrownError)
-		}
-	});
+		});
 
 	
 });
