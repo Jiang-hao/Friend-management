@@ -44,6 +44,10 @@
 	<input id="target" type='text'>	
 	<button id='connect' >Connect</button>
 	<button id='update' >Update</button>
+	<button id='retrieve' >Retrieve</button>
+	<button id='common' >Common</button>
+	<button id='follow' >Follow</button>
+	<button id='block' >Block</button>
 </div>
 <br><br>
 
@@ -56,22 +60,40 @@
 
 
 </div>
+<br><br>
+
+<div>
+	
+	<p>API response display:</p>
+	<br>
+<p>Data sent to server:
+	<span id='send'>
+		
+	</span>
+<br>
+<p>Data received from server:
+	<span id='receive'>
+		
+	</span>
+
+</div>
 	
 	
 	<script>
 	
  $('#connect').on('click',function(){
-
+		var para = [$('#requestor').val(),$('#target').val()]
 		$.ajax({
 			type:"POST",
 			dataType: "json",
 			url: 'http://localhost:8000/connect/',
 			data:{
-				'requestor':$('#requestor').val(),
-				'target':$('#target').val()
+				'friends':para
 			},
 			success: function(result){
-				alert(result["success"])
+				$('#send').html(para)
+				$('#receive').html(JSON.stringify(result))
+
 			},
 			error: function(xhr,thrownError){
 				alert(thrownError)
@@ -80,6 +102,84 @@
 
 	
 });
+
+
+  $('#retrieve').on('click',function(){
+  		var para = $('#requestor').val()
+		$.ajax({
+			type:"POST",
+			url: 'http://localhost:8000/retrieve/',
+			data:{
+				'email': para
+			},
+			success: function(result){
+				$('#send').html(para)
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+
+	
+});
+
+  $('#common').on('click',function(){
+  		var para = [$('#requestor').val(),$('#target').val()]
+		$.ajax({
+			type:"POST",
+			url: 'http://localhost:8000/common/',
+			data:{
+				'friends': para
+			},
+			success: function(result){
+				$('#send').html(para)
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+
+	
+});
+
+
+  $('#follow').on('click',function(){
+  		var para = [$('#requestor').val(),$('#target').val()]
+		$.ajax({
+			type:"POST",
+			url: 'http://localhost:8000/follow/',
+			data:{
+				'requestor': $('#requestor').val(),
+				'target': $('#target').val(),
+			},
+			success: function(result){
+				$('#send').html(para)
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+
+	
+});
+
+
+  $('#block').on('click',function(){
+  		var para = [$('#requestor').val(),$('#target').val()]
+		$.ajax({
+			type:"POST",
+			url: 'http://localhost:8000/block/',
+			data:{
+				'requestor': $('#requestor').val(),
+				'target': $('#target').val(),
+			},
+			success: function(result){
+				$('#send').html(para)
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+
+	
+});
+
 
   $('#update').on('click',function(){
 
@@ -95,6 +195,7 @@
 
 	
 });
+
 
 
 
