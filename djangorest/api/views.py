@@ -14,7 +14,7 @@ import datetime
 from django.template.loader import get_template
 from django.shortcuts import render_to_response
 from django.shortcuts import render
-
+import re
 
 class CreateView(generics.ListCreateAPIView):
     """This class defines the create behavior of our rest api."""
@@ -55,39 +55,48 @@ def connect(request):
 	 		requestor_obj = Person.objects.get(name=requestor)
 	 	else:
 	 		#No records
-	 		Person.objects.create(name=requestor,post_message='',receive_message='')
+	 		Person.objects.create(name=requestor,post_message='',received_message='')
 	 		requestor_obj = Person.objects.get(name=requestor)
 	 		Friends.objects.create(person=requestor_obj,friends=[], blocked_friends=[],follower=[],follow=[] )
-
 
 	 	if bool(Person.objects.filter(name=target)):
 	 		#Record exists
 	 		target_obj = Person.objects.get(name=target)
 	 	else:
 	 		#No records
-	 		Person.objects.create(name=target,post_message='',receive_message='')
+	 		Person.objects.create(name=target,post_message='',received_message='')
 	 		target_obj = Person.objects.get(name=target)
 	 		Friends.objects.create(person=target_obj,friends=[], blocked_friends=[],follower=[],follow=[] )
 	 	
 	 	try:
 	 		#Record exists
 	 		requestor_friends = Friends.objects.get(person=requestor_obj)
-	 		if target not in requestor_friends.friends:
-		 		requestor_friends.friends.append(target)
-		 		requestor_friends.save()
-		 		res['success'] = True
-		 	else:
-		 		res['success'] = False
-		 		res['reason'] = target + " is already a friend of "+requestor
-	 		
+	 		#Check if target blocked requestor
 	 		target_friends = Friends.objects.get(person=target_obj)
-	 		if requestor not in target_friends.friends:
-		 		target_friends.friends.append(requestor)
-		 		target_friends.save()
-		 		res['success'] = True
-		 	else:
+	 		if (requestor in target_friends.blocked_friends):
+	 			res['success'] = False
+		 		res['reason'] = target + " blocked "+requestor +". Cannot connect"	
+		 	elif (target in requestor_friends.blocked_friends):
 		 		res['success'] = False
-		 		res['reason'] = target + " is already a friend of "+requestor
+		 		res['reason'] = requestor + " blocked "+target +". Cannot connect"
+		 	else:
+		 		#Not blocked
+		 		if target not in requestor_friends.friends:
+			 		requestor_friends.friends.append(target)
+			 		requestor_friends.save()
+			 		res['success'] = True
+			 	else:
+			 		res['success'] = False
+			 		res['reason'] = target + " is already a friend of "+requestor
+		 		
+		 		target_friends = Friends.objects.get(person=target_obj)
+		 		if requestor not in target_friends.friends:
+			 		target_friends.friends.append(requestor)
+			 		target_friends.save()
+			 		res['success'] = True
+			 	else:
+			 		res['success'] = False
+			 		res['reason'] = target + " is already a friend of "+requestor
 	 	except Exception as e:
 	 		res['success'] = False
 	 		res['reason'] = "Error occured: "+ str(e) 
@@ -183,7 +192,7 @@ def follow(request):
 
 	except:
 		#Not in Person db. Create one for requestor
-		Person.objects.create(name=requestor,post_message='',receive_message='')
+		Person.objects.create(name=requestor,post_message='',received_message='')
 		requestor_person = Person.objects.get(name=requestor)
 		Friends.objects.create(person=requestor_person,friends=[],blocked_friends=[],follower=[],follow=[])
 	
@@ -193,7 +202,7 @@ def follow(request):
 
 	except:
 		#Not in Person db. Create one for requestor
-		Person.objects.create(name=target,post_message='',receive_message='')
+		Person.objects.create(name=target,post_message='',received_message='')
 		target_person = Person.objects.get(name=target)
 		Friends.objects.create(person=target_person,friends=[],blocked_friends=[],follower=[],follow=[])
 
@@ -237,7 +246,7 @@ def block(request):
 
 	except:
 		#Not in Person db. Create one for requestor
-		Person.objects.create(name=requestor,post_message='',receive_message='')
+		Person.objects.create(name=requestor,post_message='',received_message='')
 		requestor_person = Person.objects.get(name=requestor)
 		Friends.objects.create(person=requestor_person,friends=[],blocked_friends=[],follower=[],follow=[])
 	
@@ -247,7 +256,7 @@ def block(request):
 
 	except:
 		#Not in Person db. Create one for requestor
-		Person.objects.create(name=target,post_message='',receive_message='')
+		Person.objects.create(name=target,post_message='',received_message='')
 		target_person = Person.objects.get(name=target)
 		Friends.objects.create(person=target_person,friends=[],blocked_friends=[],follower=[],follow=[])
 
@@ -263,5 +272,67 @@ def block(request):
 		return HttpResponse(json.dumps(res))
 	
 	res['success'] = True
+
+	return HttpResponse(json.dumps(res))
+
+
+
+
+@csrf_exempt
+def message(request):
+	
+	res={}
+	receiver=[]
+	sender = request.POST.get('sender')
+	text = request.POST.get('text')
+	try:
+		sender_person = Person.objects.get(name=sender)
+
+	except:
+		#Not in Person db. Create one for requestor
+		Person.objects.create(name=sender,post_message='',received_message='')
+		sender_person = Person.objects.get(name=sender)
+		Friends.objects.create(person=sender_person,friends=[],blocked_friends=[],follower=[],follow=[])
+	
+	try:
+		sender_friends = Friends.objects.get(person=sender_person)
+		sender_friends_list = sender_friends.friends
+		sender_follower_list = sender_friends.follower
+		#Condition 1: Friends of sender, and didnt block sender
+		for item in sender_friends_list:
+			item_person = Person.objects.get(name=item)
+			item_friends = Friends.objects.get(person=item_person)
+			if sender not in item_friends.blocked_friends:
+				if item not in receiver:
+					receiver.append(item)
+
+		#Condition 2: Followers of sender, and didnt block sender
+		for item in sender_follower_list:
+			item_person = Person.objects.get(name=item)
+			item_friends = Friends.objects.get(person=item_person)
+			if sender not in item_friends.blocked_friends:
+				if item not in receiver:
+					receiver.append(item)
+
+		#Condition 3: Mentions
+		mentions_in_text = re.findall(r'[\w\.-]+@[\w\.-]+', text)
+		for item in mentions_in_text:
+			try:
+				item_person = Person.objects.get(name=item)
+			except:
+				Person.objects.create(name=item,post_message='',received_message='')
+				item_person = Person.objects.get(name=item)
+				Friends.objects.create(person=item_person,friends=[],blocked_friends=[],follower=[],follow=[])
+			
+			item_friends = Friends.objects.get(person=item_person)
+			if sender not in item_friends.blocked_friends:
+				if item not in receiver:
+					receiver.append(item)
+		
+		res['success'] = True
+		res['recipients'] = receiver
+	except Exception as e:
+		res['success'] = False
+		res['reason'] = 'Error: '+str(e)
 
 	return HttpResponse(json.dumps(res))

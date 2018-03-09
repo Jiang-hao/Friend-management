@@ -9,6 +9,7 @@ urlpatterns = {
     url(r'^common/$',views.common,name='common'),
     url(r'^follow/$',views.follow,name='follow'),
     url(r'^block/$',views.block,name='block'),
+    url(r'^message/$',views.message,name='message'),
     url(r'^index/$',views.index,name='index')
 }
 

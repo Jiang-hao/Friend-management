@@ -39,15 +39,20 @@
 	</head>
 	<body>
 <div>	
-	<input id="requestor" type='text'>
+	<input id="requestor" type='text' placeholder="Enter requestor">
 	<br>
-	<input id="target" type='text'>	
+	<input id="target" type='text' placeholder="Enter target">	
+	<br>
+	<input id="sender" type='text' placeholder="Enter sender">	
+	<br>
+	<input id="text" type='text' placeholder="Enter text">	
 	<button id='connect' >Connect</button>
 	<button id='update' >Update</button>
 	<button id='retrieve' >Retrieve</button>
 	<button id='common' >Common</button>
 	<button id='follow' >Follow</button>
 	<button id='block' >Block</button>
+	<button id='message' >Message</button>
 </div>
 <br><br>
 
@@ -169,6 +174,25 @@
 			data:{
 				'requestor': $('#requestor').val(),
 				'target': $('#target').val(),
+			},
+			success: function(result){
+				$('#send').html(para)
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+
+	
+});
+
+    $('#message').on('click',function(){
+  		var para = [$('#sender').val(),$('#text').val()]
+		$.ajax({
+			type:"POST",
+			url: 'http://localhost:8000/message/',
+			data:{
+				'sender': $('#sender').val(),
+				'text': $('#text').val(),
 			},
 			success: function(result){
 				$('#send').html(para)
