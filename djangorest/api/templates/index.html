@@ -38,6 +38,107 @@
 </style>
 	</head>
 	<body>
+
+
+
+
+
+
+<!-- First Grid: Logo & About -->
+<div class="w3-row">
+  <div class="w3-half w3-black w3-container " style="height:1000px">
+    <!-- left -->
+    <div class="w3-padding-64 inline-block" style='width: 10%; '>
+    	<div class="w3-sidebar w3-bar-block w3-black" style="padding-top: 8%">
+  			<button id="connect-sidebar" class="w3-bar-item w3-button w3-hover-red">Connect two persons</button>
+  			<button id="retrieve-sidebar" class="w3-bar-item w3-button w3-hover-red">Retrieve friends</button>
+ 		 	<button id="common-sidebar" class="w3-bar-item w3-button w3-hover-red">Find common</button>
+  			<button id="follow-sidebar" class="w3-bar-item w3-button w3-hover-red">Follow</button>
+  			<button id="block-sidebar" class="w3-bar-item w3-button w3-hover-red">Block</button>
+  			<button id="message-sidebar" class="w3-bar-item w3-button w3-hover-red">Message</button>
+		</div>
+
+    </div>
+    <!-- right -->
+
+
+    <!-- Connect -->
+    <div id='connect-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;'>
+
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Requestor</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='connect-sidebar-requestor'>
+
+        <div class='w3-padding-16 w3-left-align'>
+    	<span>Target</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='content-sidebar-target'>
+
+    </div>
+
+        <!-- Retrieve -->
+    <div id='retrieve-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Requestor</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='retrieve-sidebar-requestor'>
+
+
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+<!-- Server log-->
+  <div class="w3-half w3-blue-grey w3-container" style="height:1000px">
+    <div class="w3-padding-64 w3-center">
+      <h1>Server Log</h1>
+
+      <div class="w3-left-align w3-padding-large">
+        <p>Data sent to server</p>
+        <div  class='w3-white' id='send' style="background-color:white;height:200px;width: 880px;"></div>
+        <p>Data received from server</p>
+        <div  class='w3-white' id='receive' style="background-color:white;height:500px;width: 880px;">
+ 
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- <div>
+	
+	<p>API response display:</p>
+	<br>
+<p>Data sent to server:
+	<span id='send' rows="6" cols="20">
+		
+	</span>
+<br>
+<p>Data received from server:
+	<span id='receive'>
+		
+	</span>
+
+</div> -->
+
+
+
+
+
+
+
+
 <div>	
 	<input id="requestor" type='text' placeholder="Enter requestor">
 	<br>
@@ -67,7 +168,7 @@
 </div>
 <br><br>
 
-<div>
+<!-- <div>
 	
 	<p>API response display:</p>
 	<br>
@@ -81,7 +182,7 @@
 		
 	</span>
 
-</div>
+</div> -->
 	
 	
 	<script>
@@ -118,8 +219,8 @@
 				'email': para
 			},
 			success: function(result){
-				$('#send').html(para)
-				$('#receive').html(JSON.stringify(result))
+				document.getElementById("send").innerHTML =para;
+				document.getElementById("receive").innerHTML =JSON.stringify(result);
 			},
 
 		});
@@ -221,6 +322,16 @@
 });
 
 
+
+$('#connect-sidebar').on('click',function(){
+    $('#connect-div').show()
+    $('#retrieve-div').hide()
+});
+
+$('#retrieve-sidebar').on('click',function(){
+    $('#connect-div').hide()
+    $('#retrieve-div').show()
+});
 
 
 
