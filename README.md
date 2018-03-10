@@ -57,6 +57,7 @@ HTML + CSS + Javascript + Jquery + Ajax
 ## Things to note: 
 1. For message mention function, I assume all persons use email as their id. And as long as an email is in the text, it is considered as memtions.
 2. Database max-length is 200 characters. 
+3. If database goes wrong, please let me know jiangh0313@gmail.com / +6586694597
 
 ## Things to be improved:
 Since this is an interview, I wanted to showcase the project as soon as possible. There may be some points to be improved
