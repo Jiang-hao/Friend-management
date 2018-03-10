@@ -7,7 +7,7 @@
 	<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Santa's 'Just Think' Challenge</title>
+	<title>Interview test: Friend management</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
 	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
@@ -73,8 +73,10 @@
         <div class='w3-padding-16 w3-left-align'>
     	<span>Target</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='content-sidebar-target'>
-
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='connect-sidebar-target'>
+    <div class='w3-padding-64 w3-left-align'>
+    <button class="w3-button w3-white w3-border w3-padding-16" id='connect'>connnect</button>
+</div>
     </div>
 
         <!-- Retrieve -->
@@ -84,11 +86,79 @@
     	<span>Requestor</span>
     </div>
     <input class="w3-input w3-white w3-border w3-round-large" type="text" id='retrieve-sidebar-requestor'>
-
-
+    <div class='w3-padding-64 w3-left-align'>
+    <button class="w3-button w3-white w3-border w3-padding-16" id='retrieve'>Retrieve</button>
+</div>
     </div>
 
+            <!-- Find common -->
+    <div id='common-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
 
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Requestor</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='common-sidebar-requestor'>
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Target</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='common-sidebar-target'>
+    <div class='w3-padding-64 w3-left-align'>
+    <button class="w3-button w3-white w3-border w3-padding-16" id='common'>Find common</button>
+    </div></div>
+
+
+
+            <!-- Follow -->
+    <div id='follow-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Requestor</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='follow-sidebar-requestor'>
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Target</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='follow-sidebar-target'>
+    <div class='w3-padding-64 w3-left-align'>
+    <button class="w3-button w3-white w3-border w3-padding-16" id='follow'>Follow</button>
+    </div></div>
+
+
+
+
+            <!-- Block -->
+    <div id='block-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Requestor</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='block-sidebar-requestor'>
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Target</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='block-sidebar-target'>
+    <div class='w3-padding-64 w3-left-align'>
+    <button class="w3-button w3-white w3-border w3-padding-16" id='block'>Block</button>
+    </div></div>
+
+
+
+
+            <!-- Message -->
+    <div id='message-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Requestor</span>
+    </div>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='message-sidebar-sender'>
+    <div class='w3-padding-16 w3-left-align'>
+    	<span>Text</span>
+    </div>
+    <textarea class="w3-input w3-white w3-border w3-round-large" id='message-sidebar-text'></textarea>
+    <div class='w3-padding-64 w3-left-align'>
+    	<button class="w3-button w3-white w3-border" id='message'>Post the message</button>
+	</div>
+    </div>
 
 
   </div>
@@ -139,7 +209,7 @@
 
 
 
-<div>	
+<!-- <div>	
 	<input id="requestor" type='text' placeholder="Enter requestor">
 	<br>
 	<input id="target" type='text' placeholder="Enter target">	
@@ -166,29 +236,15 @@
 
 
 </div>
-<br><br>
+<br><br> -->
 
-<!-- <div>
-	
-	<p>API response display:</p>
-	<br>
-<p>Data sent to server:
-	<span id='send'>
-		
-	</span>
-<br>
-<p>Data received from server:
-	<span id='receive'>
-		
-	</span>
-
-</div> -->
 	
 	
 	<script>
 	
  $('#connect').on('click',function(){
-		var para = [$('#requestor').val(),$('#target').val()]
+		var para = [$('#connect-sidebar-requestor').val(),$('#connect-sidebar-target').val()]
+		
 		$.ajax({
 			type:"POST",
 			dataType: "json",
@@ -197,7 +253,7 @@
 				'friends':para
 			},
 			success: function(result){
-				$('#send').html(para)
+				$('#send').html(JSON.stringify({'friends':para}))
 				$('#receive').html(JSON.stringify(result))
 
 			},
@@ -211,7 +267,7 @@
 
 
   $('#retrieve').on('click',function(){
-  		var para = $('#requestor').val()
+  		var para = $('#retrieve-sidebar-requestor').val()
 		$.ajax({
 			type:"POST",
 			url: 'http://localhost:8000/retrieve/',
@@ -219,7 +275,7 @@
 				'email': para
 			},
 			success: function(result){
-				document.getElementById("send").innerHTML =para;
+				document.getElementById("send").innerHTML =JSON.stringify({'email':para});
 				document.getElementById("receive").innerHTML =JSON.stringify(result);
 			},
 
@@ -229,7 +285,7 @@
 });
 
   $('#common').on('click',function(){
-  		var para = [$('#requestor').val(),$('#target').val()]
+  		var para = [$('#common-sidebar-requestor').val(),$('#common-sidebar-target').val()]
 		$.ajax({
 			type:"POST",
 			url: 'http://localhost:8000/common/',
@@ -237,7 +293,7 @@
 				'friends': para
 			},
 			success: function(result){
-				$('#send').html(para)
+				$('#send').html(JSON.stringify({'firends':para}))
 				$('#receive').html(JSON.stringify(result))
 			},
 
@@ -248,16 +304,15 @@
 
 
   $('#follow').on('click',function(){
-  		var para = [$('#requestor').val(),$('#target').val()]
 		$.ajax({
 			type:"POST",
 			url: 'http://localhost:8000/follow/',
 			data:{
-				'requestor': $('#requestor').val(),
-				'target': $('#target').val(),
+				'requestor': $('#follow-sidebar-requestor').val(),
+				'target': $('#follow-sidebar-target').val(),
 			},
 			success: function(result){
-				$('#send').html(para)
+				$('#send').html(JSON.stringify({'requestor':$('#follow-sidebar-requestor').val(), 'target':$('#follow-sidebar-target').val()}))
 				$('#receive').html(JSON.stringify(result))
 			},
 
@@ -268,16 +323,15 @@
 
 
   $('#block').on('click',function(){
-  		var para = [$('#requestor').val(),$('#target').val()]
 		$.ajax({
 			type:"POST",
 			url: 'http://localhost:8000/block/',
 			data:{
-				'requestor': $('#requestor').val(),
-				'target': $('#target').val(),
+				'requestor': $('#block-sidebar-requestor').val(),
+				'target': $('#block-sidebar-target').val(),
 			},
 			success: function(result){
-				$('#send').html(para)
+				$('#send').html(JSON.stringify({'requestor':$('#block-sidebar-requestor').val(), 'target':$('#block-sidebar-target').val()}))
 				$('#receive').html(JSON.stringify(result))
 			},
 
@@ -287,16 +341,15 @@
 });
 
     $('#message').on('click',function(){
-  		var para = [$('#sender').val(),$('#text').val()]
 		$.ajax({
 			type:"POST",
 			url: 'http://localhost:8000/message/',
 			data:{
-				'sender': $('#sender').val(),
-				'text': $('#text').val(),
+				'sender': $('#message-sidebar-sender').val(),
+				'text': $('#message-sidebar-text').val(),
 			},
 			success: function(result){
-				$('#send').html(para)
+				$('#send').html(JSON.stringify({'requestor':$('#message-sidebar-sender').val(), 'target':$('#message-sidebar-text').val()}))
 				$('#receive').html(JSON.stringify(result))
 			},
 
@@ -326,11 +379,53 @@
 $('#connect-sidebar').on('click',function(){
     $('#connect-div').show()
     $('#retrieve-div').hide()
+    $('#common-div').hide()
+    $('#follow-div').hide()
+    $('#block-div').hide()
+    $('#message-div').hide()
 });
 
 $('#retrieve-sidebar').on('click',function(){
     $('#connect-div').hide()
     $('#retrieve-div').show()
+    $('#common-div').hide()
+    $('#follow-div').hide()
+    $('#block-div').hide()
+    $('#message-div').hide()
+});
+$('#common-sidebar').on('click',function(){
+    $('#connect-div').hide()
+    $('#retrieve-div').hide()
+    $('#common-div').show()
+    $('#follow-div').hide()
+    $('#block-div').hide()
+    $('#message-div').hide()
+});
+
+$('#follow-sidebar').on('click',function(){
+    $('#connect-div').hide()
+    $('#retrieve-div').hide()
+    $('#common-div').hide()
+    $('#follow-div').show()
+    $('#block-div').hide()
+    $('#message-div').hide()
+});
+$('#block-sidebar').on('click',function(){
+    $('#connect-div').hide()
+    $('#retrieve-div').hide()
+    $('#common-div').hide()
+    $('#follow-div').hide()
+    $('#block-div').show()
+    $('#message-div').hide()
+});
+
+$('#message-sidebar').on('click',function(){
+    $('#connect-div').hide()
+    $('#retrieve-div').hide()
+    $('#common-div').hide()
+    $('#follow-div').hide()
+    $('#block-div').hide()
+    $('#message-div').show()
 });
 
 
