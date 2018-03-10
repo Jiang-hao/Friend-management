@@ -14,8 +14,6 @@
 	<meta name="author" content="FreeHTML5.co" />
 
 
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="favicon.ico">
 	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
 	<!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'> -->
 	
@@ -63,7 +61,7 @@
 
 
     <!-- Connect -->
-    <div id='connect-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;'>
+    <div id='connect-div' class="w3-padding-64 w3-inline-block" style='width: 50%; float:right; padding-right: 5%;'>
 
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
@@ -80,7 +78,7 @@
     </div>
 
         <!-- Retrieve -->
-    <div id='retrieve-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+    <div id='retrieve-div' class="w3-padding-64 w3-inline-block" style='width: 50%; float:right; padding-right: 5%;display:none'>
 
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
@@ -92,7 +90,7 @@
     </div>
 
             <!-- Find common -->
-    <div id='common-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+    <div id='common-div' class="w3-padding-64 w3-inline-block" style='width: 50%; float:right; padding-right: 5%;display:none'>
 
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
@@ -109,7 +107,7 @@
 
 
             <!-- Follow -->
-    <div id='follow-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+    <div id='follow-div' class="w3-padding-64 w3-inline-block" style='width: 50%; float:right; padding-right: 5%;display:none'>
 
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
@@ -127,7 +125,7 @@
 
 
             <!-- Block -->
-    <div id='block-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+    <div id='block-div' class="w3-padding-64 w3-inline-block" style='width: 50%; float:right; padding-right: 5%;display:none'>
 
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
@@ -145,7 +143,7 @@
 
 
             <!-- Message -->
-    <div id='message-div' class="w3-padding-64 w3-inline-block" style='width: 70%; float:right; padding-right: 5%;display:none'>
+    <div id='message-div' class="w3-padding-64 w3-inline-block" style='width: 50%; float:right; padding-right: 5%;display:none'>
 
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
@@ -173,9 +171,9 @@
 
       <div class="w3-left-align w3-padding-large">
         <p>Data sent to server</p>
-        <div  class='w3-white' id='send' style="background-color:white;height:200px;width: 880px;"></div>
+        <div  class='w3-white' id='send' style="background-color:white;height:200px;width: 100%;"></div>
         <p>Data received from server</p>
-        <div  class='w3-white' id='receive' style="background-color:white;height:500px;width: 880px;">
+        <div  class='w3-white' id='receive' style="background-color:white;height:500px;width: 100%;">
  
         </div>
       </div>
@@ -186,193 +184,131 @@
 
 
 
-<!-- <div>
-	
-	<p>API response display:</p>
-	<br>
-<p>Data sent to server:
-	<span id='send' rows="6" cols="20">
-		
-	</span>
-<br>
-<p>Data received from server:
-	<span id='receive'>
-		
-	</span>
-
-</div> -->
-
-
-
-
-
-
-
-
-<!-- <div>	
-	<input id="requestor" type='text' placeholder="Enter requestor">
-	<br>
-	<input id="target" type='text' placeholder="Enter target">	
-	<br>
-	<input id="sender" type='text' placeholder="Enter sender">	
-	<br>
-	<input id="text" type='text' placeholder="Enter text">	
-	<button id='connect' >Connect</button>
-	<button id='update' >Update</button>
-	<button id='retrieve' >Retrieve</button>
-	<button id='common' >Common</button>
-	<button id='follow' >Follow</button>
-	<button id='block' >Block</button>
-	<button id='message' >Message</button>
-</div>
-<br><br>
-
-<div>
-	
-	<p>All persons:</p>
-	<ul id='update-list'>
-		{% include "partial.html" %}
-	</ul>
-
-
-</div>
-<br><br> -->
 
 	
 	
 	<script>
 	
- $('#connect').on('click',function(){
-		var para = [$('#connect-sidebar-requestor').val(),$('#connect-sidebar-target').val()]
-		
-		$.ajax({
-			type:"POST",
-			dataType: "json",
-			url: 'http://localhost:8000/connect/',
-			data:{
-				'friends':para
-			},
-			success: function(result){
-				$('#send').html(JSON.stringify({'friends':para}))
-				$('#receive').html(JSON.stringify(result))
+$('#connect').on('click',function(){
+	var para = [$('#connect-sidebar-requestor').val(),$('#connect-sidebar-target').val()]
+	$.ajax({
+		type:"POST",
+		dataType: "json",
+		url: '../connect/',
+		data:{
+			'friends':para
+	},
+		success: function(result){
+			$('#send').html(JSON.stringify({'friends':para}))
+			$('#receive').html(JSON.stringify(result))
 
-			},
-			error: function(xhr,thrownError){
-				alert(thrownError)
-			}
-		});
+		},
+		error: function(xhr,thrownError){
+			alert(thrownError)
+		}
+	});
+});
 
-	
+$('#retrieve').on('click',function(){
+	var para = $('#retrieve-sidebar-requestor').val()
+	$.ajax({
+		type:"POST",
+		url: '../retrieve/',
+		data:{
+			'email': para
+		},
+		success: function(result){
+			document.getElementById("send").innerHTML =JSON.stringify({'email':para});
+			document.getElementById("receive").innerHTML =JSON.stringify(result);
+		},
+
+	});
+});
+
+$('#common').on('click',function(){
+	var para = [$('#common-sidebar-requestor').val(),$('#common-sidebar-target').val()]
+	$.ajax({
+		type:"POST",
+		url: '../common/',
+		data:{
+			'friends': para
+		},
+		success: function(result){
+			$('#send').html(JSON.stringify({'firends':para}))
+			$('#receive').html(JSON.stringify(result))
+		},
+
+	});
+
 });
 
 
-  $('#retrieve').on('click',function(){
-  		var para = $('#retrieve-sidebar-requestor').val()
-		$.ajax({
-			type:"POST",
-			url: 'http://localhost:8000/retrieve/',
-			data:{
-				'email': para
-			},
-			success: function(result){
-				document.getElementById("send").innerHTML =JSON.stringify({'email':para});
-				document.getElementById("receive").innerHTML =JSON.stringify(result);
-			},
+$('#follow').on('click',function(){
+	$.ajax({
+		type:"POST",
+		url: '../follow/',
+		data:{
+			'requestor': $('#follow-sidebar-requestor').val(),
+			'target': $('#follow-sidebar-target').val(),
+		},
+		success: function(result){
+			$('#send').html(JSON.stringify({'requestor':$('#follow-sidebar-requestor').val(), 'target':$('#follow-sidebar-target').val()}))
+			$('#receive').html(JSON.stringify(result))
+		},
 
-		});
-
-	
-});
-
-  $('#common').on('click',function(){
-  		var para = [$('#common-sidebar-requestor').val(),$('#common-sidebar-target').val()]
-		$.ajax({
-			type:"POST",
-			url: 'http://localhost:8000/common/',
-			data:{
-				'friends': para
-			},
-			success: function(result){
-				$('#send').html(JSON.stringify({'firends':para}))
-				$('#receive').html(JSON.stringify(result))
-			},
-
-		});
-
-	
+	});
 });
 
 
-  $('#follow').on('click',function(){
-		$.ajax({
-			type:"POST",
-			url: 'http://localhost:8000/follow/',
-			data:{
-				'requestor': $('#follow-sidebar-requestor').val(),
-				'target': $('#follow-sidebar-target').val(),
-			},
-			success: function(result){
-				$('#send').html(JSON.stringify({'requestor':$('#follow-sidebar-requestor').val(), 'target':$('#follow-sidebar-target').val()}))
-				$('#receive').html(JSON.stringify(result))
-			},
+$('#block').on('click',function(){
+	$.ajax({
+		type:"POST",
+		url: '../block/',
+		data:{
+			'requestor': $('#block-sidebar-requestor').val(),
+			'target': $('#block-sidebar-target').val(),
+		},
+		success: function(result){
+			$('#send').html(JSON.stringify({'requestor':$('#block-sidebar-requestor').val(), 'target':$('#block-sidebar-target').val()}))
+			$('#receive').html(JSON.stringify(result))
+		},
 
-		});
+	});
 
-	
+});
+
+$('#message').on('click',function(){
+	$.ajax({
+		type:"POST",
+		url: '../message/',
+		data:{
+			'sender': $('#message-sidebar-sender').val(),
+			'text': $('#message-sidebar-text').val(),
+		},
+		success: function(result){
+			$('#send').html(JSON.stringify({'requestor':$('#message-sidebar-sender').val(), 'target':$('#message-sidebar-text').val()}))
+			$('#receive').html(JSON.stringify(result))
+		},
+
+	});
+
 });
 
 
-  $('#block').on('click',function(){
-		$.ajax({
-			type:"POST",
-			url: 'http://localhost:8000/block/',
-			data:{
-				'requestor': $('#block-sidebar-requestor').val(),
-				'target': $('#block-sidebar-target').val(),
-			},
-			success: function(result){
-				$('#send').html(JSON.stringify({'requestor':$('#block-sidebar-requestor').val(), 'target':$('#block-sidebar-target').val()}))
-				$('#receive').html(JSON.stringify(result))
-			},
+//   $('#update').on('click',function(){
 
-		});
+// 		$.ajax({
+// 			type:"GET",
+// 			url: '../index/',
+// 			success: function(result){
+// 				$('#update-list').empty()
+// 				$('#update-list').append(result)
+// 			},
+
+// 		});
 
 	
-});
-
-    $('#message').on('click',function(){
-		$.ajax({
-			type:"POST",
-			url: 'http://localhost:8000/message/',
-			data:{
-				'sender': $('#message-sidebar-sender').val(),
-				'text': $('#message-sidebar-text').val(),
-			},
-			success: function(result){
-				$('#send').html(JSON.stringify({'requestor':$('#message-sidebar-sender').val(), 'target':$('#message-sidebar-text').val()}))
-				$('#receive').html(JSON.stringify(result))
-			},
-
-		});
-
-	
-});
-
-
-  $('#update').on('click',function(){
-
-		$.ajax({
-			type:"GET",
-			url: 'http://localhost:8000/index/',
-			success: function(result){
-				$('#update-list').empty()
-				$('#update-list').append(result)
-			},
-
-		});
-
-	
-});
+// });
 
 
 
@@ -434,21 +370,6 @@ $('#message-sidebar').on('click',function(){
 	
 	
 	</script>
-	
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- jQuery Easing -->
-	<script src="js/jquery.easing.1.3.js"></script>
-	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Flexslider -->
-	<script src="js/jquery.flexslider-min.js"></script>
-
-	<!-- MAIN JS -->
-	<script src="js/main.js"></script>
-
 	</body>
 </html>
 

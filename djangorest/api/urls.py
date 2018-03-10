@@ -3,7 +3,6 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = {
-    url(r'^all/$', views.listAll, name="listAll"),
     url(r'^connect/$', views.connect, name="connect"),
     url(r'^retrieve/$',views.retrieve,name='retrieve'),
     url(r'^common/$',views.common,name='common'),
