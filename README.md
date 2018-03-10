@@ -47,6 +47,7 @@ djangorestframework: Changed to ajax
 django-cors-header, django-cors-middleware, csrf_exempt -> to handle cross-site calls
 Exceptions-> to handle exceptions might occur
 Regular expressions-> to handle mention function in text
+pythonanywhere-> to deploy the project
 
 ##### Front-end
 HTML + CSS + Javascript + Jquery + Ajax
