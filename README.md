@@ -60,6 +60,7 @@ HTML + CSS + Javascript + Jquery + Ajax
 3. If database goes wrong, please let me know jiangh0313@gmail.com / +6586694597
 4. Default data in database is
   a@a and b@b. They are friends with each other
+  *In this project, I just tested db since all others I tested on the webpage itself. For more testing, you may find here: https://github.com/cl-nus/JavaTerminal/tree/master/test . It is a school project which is a software testing module. We wrote tests cases for a self-made PC cmd software
 
 ## Things to be improved:
 Since this is an interview, I wanted to showcase the project as soon as possible. There may be some points to be improved
