@@ -66,12 +66,12 @@
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='connect-sidebar-requestor'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='connect-sidebar-requestor' maxlength="50">
 
         <div class='w3-padding-16 w3-left-align'>
     	<span>Target</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='connect-sidebar-target'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='connect-sidebar-target' maxlength="50">
     <div class='w3-padding-64 w3-left-align'>
     <button class="w3-button w3-white w3-border w3-padding-16" id='connect'>connnect</button>
 </div>
@@ -83,7 +83,7 @@
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='retrieve-sidebar-requestor'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='retrieve-sidebar-requestor' maxlength="50">
     <div class='w3-padding-64 w3-left-align'>
     <button class="w3-button w3-white w3-border w3-padding-16" id='retrieve'>Retrieve</button>
 </div>
@@ -95,11 +95,11 @@
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='common-sidebar-requestor'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='common-sidebar-requestor' maxlength="50">
     <div class='w3-padding-16 w3-left-align'>
     	<span>Target</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='common-sidebar-target'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='common-sidebar-target' maxlength="50">
     <div class='w3-padding-64 w3-left-align'>
     <button class="w3-button w3-white w3-border w3-padding-16" id='common'>Find common</button>
     </div></div>
@@ -112,11 +112,11 @@
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='follow-sidebar-requestor'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='follow-sidebar-requestor' maxlength="50">
     <div class='w3-padding-16 w3-left-align'>
     	<span>Target</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='follow-sidebar-target'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='follow-sidebar-target' maxlength="50">
     <div class='w3-padding-64 w3-left-align'>
     <button class="w3-button w3-white w3-border w3-padding-16" id='follow'>Follow</button>
     </div></div>
@@ -130,11 +130,11 @@
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='block-sidebar-requestor'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='block-sidebar-requestor' maxlength="50">
     <div class='w3-padding-16 w3-left-align'>
     	<span>Target</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='block-sidebar-target'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='block-sidebar-target' maxlength="50">
     <div class='w3-padding-64 w3-left-align'>
     <button class="w3-button w3-white w3-border w3-padding-16" id='block'>Block</button>
     </div></div>
@@ -148,11 +148,11 @@
     <div class='w3-padding-16 w3-left-align'>
     	<span>Requestor</span>
     </div>
-    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='message-sidebar-sender'>
+    <input class="w3-input w3-white w3-border w3-round-large" type="text" id='message-sidebar-sender' maxlength="50">
     <div class='w3-padding-16 w3-left-align'>
     	<span>Text</span>
     </div>
-    <textarea class="w3-input w3-white w3-border w3-round-large" id='message-sidebar-text'></textarea>
+    <textarea class="w3-input w3-white w3-border w3-round-large" id='message-sidebar-text' maxlength="140"></textarea>
     <div class='w3-padding-64 w3-left-align'>
     	<button class="w3-button w3-white w3-border" id='message'>Post the message</button>
 	</div>
@@ -189,108 +189,135 @@
 	
 	<script>
 	
-$('#connect').on('click',function(){
-	var para = [$('#connect-sidebar-requestor').val(),$('#connect-sidebar-target').val()]
-	$.ajax({
-		type:"POST",
-		dataType: "json",
-		url: '../connect/',
-		data:{
-			'friends':para
-	},
-		success: function(result){
-			$('#send').html(JSON.stringify({'friends':para}))
-			$('#receive').html(JSON.stringify(result))
+ $('#connect').on('click',function(){
+		if($('#connect-sidebar-requestor').val()=='' || $('#connect-sidebar-target').val()==''){
+		    alert('Invalid input.')
+		} else{
+		   	var para = [$('#connect-sidebar-requestor').val(),$('#connect-sidebar-target').val()]
+    		$.ajax({
+    			type:"POST",
+    			dataType: "json",
+    			url: '../connect/',
+    			data:{
+    				'friends':para
+    			},
+    			success: function(result){
+    				$('#send').html(JSON.stringify({'friends':para}))
+    				$('#receive').html(JSON.stringify(result))
 
-		},
-		error: function(xhr,thrownError){
-			alert(thrownError)
+    			},
+    			error: function(xhr,thrownError){
+    				alert(thrownError)
+    			}
+    		});
 		}
-	});
-});
-
-$('#retrieve').on('click',function(){
-	var para = $('#retrieve-sidebar-requestor').val()
-	$.ajax({
-		type:"POST",
-		url: '../retrieve/',
-		data:{
-			'email': para
-		},
-		success: function(result){
-			document.getElementById("send").innerHTML =JSON.stringify({'email':para});
-			document.getElementById("receive").innerHTML =JSON.stringify(result);
-		},
-
-	});
-});
-
-$('#common').on('click',function(){
-	var para = [$('#common-sidebar-requestor').val(),$('#common-sidebar-target').val()]
-	$.ajax({
-		type:"POST",
-		url: '../common/',
-		data:{
-			'friends': para
-		},
-		success: function(result){
-			$('#send').html(JSON.stringify({'firends':para}))
-			$('#receive').html(JSON.stringify(result))
-		},
-
-	});
-
 });
 
 
-$('#follow').on('click',function(){
-	$.ajax({
-		type:"POST",
-		url: '../follow/',
-		data:{
-			'requestor': $('#follow-sidebar-requestor').val(),
-			'target': $('#follow-sidebar-target').val(),
-		},
-		success: function(result){
-			$('#send').html(JSON.stringify({'requestor':$('#follow-sidebar-requestor').val(), 'target':$('#follow-sidebar-target').val()}))
-			$('#receive').html(JSON.stringify(result))
-		},
+  $('#retrieve').on('click',function(){
+      	if($('#retrieve-sidebar-requestor').val()==''){
+		    alert('Invalid input.')
+		} else{
+		  var para = $('#retrieve-sidebar-requestor').val()
+		$.ajax({
+			type:"POST",
+			url: '../retrieve/',
+			data:{
+				'email': para
+			},
+			success: function(result){
+				document.getElementById("send").innerHTML =JSON.stringify({'email':para});
+				document.getElementById("receive").innerHTML =JSON.stringify(result);
+			},
 
-	});
-});
-
-
-$('#block').on('click',function(){
-	$.ajax({
-		type:"POST",
-		url: '../block/',
-		data:{
-			'requestor': $('#block-sidebar-requestor').val(),
-			'target': $('#block-sidebar-target').val(),
-		},
-		success: function(result){
-			$('#send').html(JSON.stringify({'requestor':$('#block-sidebar-requestor').val(), 'target':$('#block-sidebar-target').val()}))
-			$('#receive').html(JSON.stringify(result))
-		},
-
-	});
+		});
+		}
 
 });
 
-$('#message').on('click',function(){
-	$.ajax({
-		type:"POST",
-		url: '../message/',
-		data:{
-			'sender': $('#message-sidebar-sender').val(),
-			'text': $('#message-sidebar-text').val(),
-		},
-		success: function(result){
-			$('#send').html(JSON.stringify({'requestor':$('#message-sidebar-sender').val(), 'target':$('#message-sidebar-text').val()}))
-			$('#receive').html(JSON.stringify(result))
-		},
+  $('#common').on('click',function(){
+        if($('#common-sidebar-requestor').val()=='' || $('#common-sidebar-target').val()==''){
+		    alert('Invalid input.')
+		} else{
+  		var para = [$('#common-sidebar-requestor').val(),$('#common-sidebar-target').val()]
+		$.ajax({
+			type:"POST",
+			url: '../common/',
+			data:{
+				'friends': para
+			},
+			success: function(result){
+				$('#send').html(JSON.stringify({'firends':para}))
+				$('#receive').html(JSON.stringify(result))
+			},
 
-	});
+		});
+}
+
+});
+
+
+  $('#follow').on('click',function(){
+		 if( $('#follow-sidebar-requestor').val()=='' || $('#follow-sidebar-target').val()==''){
+		    alert('Invalid input.')
+		} else{
+		$.ajax({
+			type:"POST",
+			url: '../follow/',
+			data:{
+				'requestor': $('#follow-sidebar-requestor').val(),
+				'target': $('#follow-sidebar-target').val(),
+			},
+			success: function(result){
+				$('#send').html(JSON.stringify({'requestor':$('#follow-sidebar-requestor').val(), 'target':$('#follow-sidebar-target').val()}))
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+
+}
+});
+
+
+  $('#block').on('click',function(){
+		if( $('#block-sidebar-requestor').val()=='' || $('#block-sidebar-target').val()==''){
+		    alert('Invalid input.')
+		} else{
+		$.ajax({
+			type:"POST",
+			url: '../block/',
+			data:{
+				'requestor': $('#block-sidebar-requestor').val(),
+				'target': $('#block-sidebar-target').val(),
+			},
+			success: function(result){
+				$('#send').html(JSON.stringify({'requestor':$('#block-sidebar-requestor').val(), 'target':$('#block-sidebar-target').val()}))
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+}
+
+});
+
+    $('#message').on('click',function(){
+		if( $('#message-sidebar-sender').val()=='' || $('#message-sidebar-text').val()==''){
+		    alert('Invalid input.')
+		} else{
+		$.ajax({
+			type:"POST",
+			url: '../message/',
+			data:{
+				'sender': $('#message-sidebar-sender').val(),
+				'text': $('#message-sidebar-text').val(),
+			},
+			success: function(result){
+				$('#send').html(JSON.stringify({'requestor':$('#message-sidebar-sender').val(), 'target':$('#message-sidebar-text').val()}))
+				$('#receive').html(JSON.stringify(result))
+			},
+
+		});
+}
 
 });
 
