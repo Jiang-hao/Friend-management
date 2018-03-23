@@ -1,7 +1,4 @@
 # Friend-management
-Hi SG power digital,
-
-This is Jiang Hao, and here is the pre-interview project I did. 
 
 I used Django + Sqlite3(PostgreSql) for back-end. Javacript + Jquery + Ajax are used for front-end. Since I saw from the project description, the requirements are mainly about back-end, I did not use any framework for front-end. 
 
